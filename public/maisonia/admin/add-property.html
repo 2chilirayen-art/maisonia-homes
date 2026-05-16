@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add property — Maisonia Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="brand">Maison<span>ia</span></div>
+      <nav class="admin-nav">
+        <a href="admin-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="properties-manager.html"><i class="fas fa-home"></i> Properties</a>
+        <a href="add-property.html" class="active"><i class="fas fa-plus-circle"></i> Add property</a>
+        <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+      </nav>
+      <div class="admin-user">
+        <div class="avatar" id="user-avatar">A</div>
+        <div style="flex:1;min-width:0"><strong id="user-email" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block">…</strong><span>Administrator</span></div>
+        <button class="btn-icon" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="admin-toggle" id="toggle-sidebar"><i class="fas fa-bars"></i></button>
+          <h1 id="page-title">Add property</h1>
+        </div>
+      </div>
+
+      <form id="property-form" class="panel">
+        <div class="form-grid">
+          <div class="form-group full"><label>Title</label><input name="title" required placeholder="Modern downtown apartment"></div>
+          <div class="form-group full"><label>Description</label><textarea name="description" rows="4" required></textarea></div>
+          <div class="form-group"><label>Price (USD / month)</label><input type="number" name="price" required min="0"></div>
+          <div class="form-group"><label>Type</label>
+            <select name="type" required>
+              <option value="">Select type</option>
+              <option>Apartment</option><option>Villa</option><option>House</option><option>Studio</option><option>Penthouse</option>
+            </select>
+          </div>
+          <div class="form-group"><label>City</label><input name="city" required></div>
+          <div class="form-group"><label>Address</label><input name="address" required></div>
+          <div class="form-group"><label>Bedrooms</label><input type="number" name="bedrooms" min="0" value="1"></div>
+          <div class="form-group"><label>Bathrooms</label><input type="number" name="bathrooms" min="0" value="1"></div>
+          <div class="form-group"><label>Area (m²)</label><input type="number" name="area" min="0"></div>
+          <div class="form-group"><label>Amenities (comma separated)</label><input name="amenities" placeholder="WiFi, Parking, Pool, Gym"></div>
+
+          <div class="form-group full">
+            <label>Location on map (click to place pin)</label>
+            <div id="picker-map"></div>
+            <div style="display:flex;gap:12px;margin-top:10px">
+              <input id="f-lat" placeholder="Latitude" readonly style="flex:1;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC">
+              <input id="f-lng" placeholder="Longitude" readonly style="flex:1;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC">
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label>Images (multiple)</label>
+            <label class="dropzone" for="file-input">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p><strong>Click to upload</strong> or drag & drop — JPG / PNG up to 10 images</p>
+              <input id="file-input" type="file" accept="image/*" multiple>
+            </label>
+            <div class="image-previews" id="previews"></div>
+          </div>
+
+          <div class="form-group full" style="display:flex;gap:10px;justify-content:flex-end">
+            <a href="properties-manager.html" class="btn btn-outline">Cancel</a>
+            <button class="btn btn-primary" type="submit" id="submit-btn"><i class="fas fa-save"></i> <span>Save property</span></button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script type="module">
+    import { requireAdmin, logout } from '../js/auth.js';
+    import { createProperty, updateProperty, getProperty } from '../js/properties.js';
+    import { storage, storageRef, uploadBytesResumable, getDownloadURL } from '../js/firebase-config.js';
+    import { renderPicker } from '../js/map.js';
+    import { toast } from '../js/ui.js';
+
+    const user = await requireAdmin();
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-avatar').textContent = (user.email[0] || 'A').toUpperCase();
+    document.getElementById('logout-btn').addEventListener('click', async () => { await logout(); location.replace('../login.html'); });
+    document.getElementById('toggle-sidebar').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+
+    // Edit mode?
+    const editId = new URLSearchParams(location.search).get('id');
+    const form = document.getElementById('property-form');
+    let uploadedImages = []; // existing URLs
+    let pendingFiles = [];   // new File objects
+    let coords = { lat: null, lng: null };
+
+    if (editId) {
+      document.getElementById('page-title').textContent = 'Edit property';
+      const p = await getProperty(editId);
+      if (p) {
+        ['title','description','price','type','city','address','bedrooms','bathrooms','area','amenities'].forEach(k => {
+          if (form[k] != null && p[k] != null) form[k].value = p[k];
+        });
+        uploadedImages = p.images || [];
+        coords = { lat: p.lat || null, lng: p.lng || null };
+        if (p.lat) { document.getElementById('f-lat').value = p.lat; document.getElementById('f-lng').value = p.lng; }
+        renderPreviews();
+      }
+    }
+
+    renderPicker('picker-map', coords, (c) => {
+      coords = c;
+      document.getElementById('f-lat').value = c.lat.toFixed(6);
+      document.getElementById('f-lng').value = c.lng.toFixed(6);
+    });
+
+    // Image previews
+    const previews = document.getElementById('previews');
+    function renderPreviews() {
+      previews.innerHTML = '';
+      uploadedImages.forEach((url, i) => {
+        const d = document.createElement('div');
+        d.className = 'prev';
+        d.innerHTML = `<img src="${url}"><button type="button" data-rm-url="${i}"><i class="fas fa-times"></i></button>`;
+        previews.appendChild(d);
+      });
+      pendingFiles.forEach((f, i) => {
+        const d = document.createElement('div');
+        d.className = 'prev';
+        d.innerHTML = `<img src="${URL.createObjectURL(f)}"><button type="button" data-rm-pending="${i}"><i class="fas fa-times"></i></button>`;
+        previews.appendChild(d);
+      });
+      previews.querySelectorAll('[data-rm-url]').forEach(b => b.addEventListener('click', () => { uploadedImages.splice(+b.dataset.rmUrl, 1); renderPreviews(); }));
+      previews.querySelectorAll('[data-rm-pending]').forEach(b => b.addEventListener('click', () => { pendingFiles.splice(+b.dataset.rmPending, 1); renderPreviews(); }));
+    }
+
+    document.getElementById('file-input').addEventListener('change', (e) => {
+      pendingFiles = pendingFiles.concat([...e.target.files]);
+      renderPreviews();
+    });
+
+    // Submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      const lbl = btn.querySelector('span');
+      try {
+        // Upload pending files
+        if (pendingFiles.length) {
+          lbl.textContent = `Uploading 0/${pendingFiles.length}...`;
+          for (let i = 0; i < pendingFiles.length; i++) {
+            const f = pendingFiles[i];
+            const r = storageRef(storage, `properties/${Date.now()}_${i}_${f.name}`);
+            const task = uploadBytesResumable(r, f);
+            await new Promise((resolve, reject) => {
+              task.on('state_changed', null, reject, async () => {
+                const url = await getDownloadURL(task.snapshot.ref);
+                uploadedImages.push(url);
+                resolve();
+              });
+            });
+            lbl.textContent = `Uploading ${i+1}/${pendingFiles.length}...`;
+          }
+          pendingFiles = [];
+        }
+
+        const fd = new FormData(form);
+        const data = {
+          title: fd.get('title'),
+          description: fd.get('description'),
+          price: +fd.get('price') || 0,
+          type: fd.get('type'),
+          city: fd.get('city'),
+          address: fd.get('address'),
+          bedrooms: +fd.get('bedrooms') || 0,
+          bathrooms: +fd.get('bathrooms') || 0,
+          area: +fd.get('area') || 0,
+          amenities: fd.get('amenities') || '',
+          images: uploadedImages,
+          lat: coords.lat, lng: coords.lng
+        };
+
+        lbl.textContent = 'Saving...';
+        if (editId) { await updateProperty(editId, data); toast('Property updated', 'success'); }
+        else { await createProperty(data); toast('Property created', 'success'); }
+        setTimeout(() => location.href = 'properties-manager.html', 700);
+      } catch (err) {
+        console.error(err);
+        toast('Save failed: ' + err.message, 'error');
+        btn.disabled = false; lbl.textContent = 'Save property';
+      }
+    });
+  </script>
+</body>
+</html>

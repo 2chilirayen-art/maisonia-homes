@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Properties manager — Maisonia Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="brand">Maison<span>ia</span></div>
+      <nav class="admin-nav">
+        <a href="admin-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
+        <a href="properties-manager.html" class="active"><i class="fas fa-home"></i> Properties</a>
+        <a href="add-property.html"><i class="fas fa-plus-circle"></i> Add property</a>
+        <a href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+      </nav>
+      <div class="admin-user">
+        <div class="avatar" id="user-avatar">A</div>
+        <div style="flex:1;min-width:0"><strong id="user-email" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block">…</strong><span>Administrator</span></div>
+        <button class="btn-icon" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="admin-toggle" id="toggle-sidebar"><i class="fas fa-bars"></i></button>
+          <h1>Properties</h1>
+        </div>
+        <a href="add-property.html" class="btn btn-primary"><i class="fas fa-plus"></i> Add property</a>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head" style="gap:14px;flex-wrap:wrap">
+          <input id="search" placeholder="🔍 Search title or city" style="flex:1;min-width:240px;padding:11px 14px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC">
+          <select id="sort" style="padding:11px 14px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC">
+            <option value="new">Newest first</option>
+            <option value="old">Oldest first</option>
+            <option value="price-asc">Price ↑</option>
+            <option value="price-desc">Price ↓</option>
+            <option value="title">Title A→Z</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Property</th><th>City</th><th>Price</th><th>Beds</th><th>Type</th><th style="text-align:right">Actions</th></tr>
+            </thead>
+            <tbody id="tbody"><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination" style="justify-content:center;margin-top:20px"></div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { requireAdmin, logout } from '../js/auth.js';
+    import { subscribeProperties, deleteProperty } from '../js/properties.js';
+    import { escapeHtml, formatPrice, toast } from '../js/ui.js';
+
+    const user = await requireAdmin();
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-avatar').textContent = (user.email[0] || 'A').toUpperCase();
+    document.getElementById('logout-btn').addEventListener('click', async () => { await logout(); location.replace('../login.html'); });
+    document.getElementById('toggle-sidebar').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+
+    const tbody = document.getElementById('tbody');
+    const pag = document.getElementById('pagination');
+    let all = [], page = 1; const PER = 8;
+    let q = '', sort = 'new';
+
+    function getView() {
+      let arr = all.filter(p => !q || `${p.title} ${p.city} ${p.address}`.toLowerCase().includes(q));
+      if (sort === 'old') arr = [...arr].reverse();
+      else if (sort === 'price-asc') arr.sort((a,b) => (a.price||0) - (b.price||0));
+      else if (sort === 'price-desc') arr.sort((a,b) => (b.price||0) - (a.price||0));
+      else if (sort === 'title') arr.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+      return arr;
+    }
+
+    function render() {
+      const arr = getView();
+      const start = (page - 1) * PER;
+      const slice = arr.slice(start, start + PER);
+      tbody.innerHTML = slice.length ? slice.map(p => `
+        <tr>
+          <td><div class="row-cell">
+            <img class="thumb" src="${(p.images && p.images[0]) || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200'}">
+            <div><strong>${escapeHtml(p.title || '—')}</strong><span>${escapeHtml(p.address || '')}</span></div>
+          </div></td>
+          <td>${escapeHtml(p.city || '—')}</td>
+          <td><strong>${formatPrice(p.price)}</strong></td>
+          <td>${p.bedrooms ?? 0}</td>
+          <td><span class="chip gold">${escapeHtml(p.type || 'Rent')}</span></td>
+          <td>
+            <div class="row-actions">
+              <a class="btn-icon" href="../property-details.html?id=${p.id}" target="_blank" title="View"><i class="fas fa-eye"></i></a>
+              <a class="btn-icon" href="add-property.html?id=${p.id}" title="Edit"><i class="fas fa-edit"></i></a>
+              <button class="btn-icon danger" data-del="${p.id}" title="Delete"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `).join('') : '<tr><td colspan="6" class="empty-row">No properties match.</td></tr>';
+
+      const pages = Math.max(1, Math.ceil(arr.length / PER));
+      let html = `<button ${page === 1 ? 'disabled' : ''} data-p="${page-1}"><i class="fas fa-chevron-left"></i></button>`;
+      for (let i = 1; i <= pages; i++) html += `<button class="${i===page?'active':''}" data-p="${i}">${i}</button>`;
+      html += `<button ${page === pages ? 'disabled' : ''} data-p="${page+1}"><i class="fas fa-chevron-right"></i></button>`;
+      pag.innerHTML = html;
+      pag.querySelectorAll('button[data-p]').forEach(b => b.addEventListener('click', () => { page = +b.dataset.p; render(); }));
+      tbody.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+        if (!confirm('Delete this property? This cannot be undone.')) return;
+        try { await deleteProperty(b.dataset.del); toast('Property deleted', 'success'); }
+        catch (e) { toast('Delete failed', 'error'); }
+      }));
+    }
+
+    subscribeProperties((items) => { all = items; render(); });
+    document.getElementById('search').addEventListener('input', e => { q = e.target.value.toLowerCase(); page = 1; render(); });
+    document.getElementById('sort').addEventListener('change', e => { sort = e.target.value; render(); });
+  </script>
+</body>
+</html>

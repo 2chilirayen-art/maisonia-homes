@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Maisonia — Premium real estate rental platform. Discover modern homes, apartments and luxury rentals across top cities." />
+  <title>Maisonia — Your Next Home Starts Here</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css" />
+  <script defer src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">Maison<span>ia</span></a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="properties.html">Properties</a></li>
+          <li><a href="favorites.html">Favorites</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="login.html" class="btn btn-primary" style="padding:10px 20px"><i class="fas fa-lock"></i> Admin</a>
+      <button class="nav-toggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="eyebrow fade-up"><span class="dot"></span> Trusted by 12,000+ residents worldwide</div>
+      <h1 class="fade-up delay-1">Your Next Home<br>Starts <span class="accent">Here.</span></h1>
+      <p class="sub fade-up delay-2">Discover a curated collection of premium rental properties — apartments, villas and houses in the world's most desirable neighborhoods.</p>
+
+      <form id="hero-search" class="search-bar fade-up delay-3" autocomplete="off">
+        <div class="field">
+          <label>City</label>
+          <input name="city" placeholder="Anywhere" />
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <select name="type">
+            <option value="">Any type</option>
+            <option>Apartment</option><option>Villa</option><option>House</option><option>Studio</option><option>Penthouse</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Max price</label>
+          <select name="price">
+            <option value="">Any</option>
+            <option value="1000">$1,000</option>
+            <option value="2500">$2,500</option>
+            <option value="5000">$5,000</option>
+            <option value="10000">$10,000</option>
+          </select>
+        </div>
+        <button class="search-btn" type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+
+    <div class="hero-float">
+      <div class="float-card">
+        <div class="icn"><i class="fas fa-award"></i></div>
+        <div><strong>Award-winning</strong><span>Best UX 2024</span></div>
+      </div>
+      <div class="float-card">
+        <div class="icn"><i class="fas fa-shield-alt"></i></div>
+        <div><strong>100% Verified</strong><span>Every listing checked</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured properties -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-eyebrow">Curated for you</div>
+        <h2 class="section-title">Featured properties</h2>
+        <p class="section-sub">Hand-picked homes from our newest listings — updated live from our database.</p>
+      </div>
+      <div class="grid-3" id="featured-grid"></div>
+      <div style="text-align:center;margin-top:50px">
+        <a href="properties.html" class="btn btn-dark">Explore all properties <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="section alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-eyebrow">Find your neighborhood</div>
+        <h2 class="section-title">Explore on the map</h2>
+        <p class="section-sub">Browse properties by location with our interactive map.</p>
+      </div>
+      <div id="map" class="reveal"></div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="num" data-counter="2480">0</div><div class="label">Premium homes</div></div>
+        <div class="stat reveal"><div class="num" data-counter="58">0</div><div class="label">Cities covered</div></div>
+        <div class="stat reveal"><div class="num" data-counter="12500">0</div><div class="label">Happy clients</div></div>
+        <div class="stat reveal"><div class="num" data-counter="4980">0</div><div class="label">5-star reviews</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-eyebrow">What our clients say</div>
+        <h2 class="section-title">Loved by thousands</h2>
+      </div>
+      <div class="grid-3">
+        <div class="testimonial reveal">
+          <p class="quote">"Maisonia made finding our dream apartment effortless. The interface is gorgeous and the listings are top-tier."</p>
+          <div class="who"><img src="https://i.pravatar.cc/100?img=47" alt=""><div><strong>Sofia Laurent</strong><span>Resident, Paris</span></div></div>
+        </div>
+        <div class="testimonial reveal">
+          <p class="quote">"Best real-estate platform I've used. Clear photos, accurate info and real-time updates. A breath of fresh air."</p>
+          <div class="who"><img src="https://i.pravatar.cc/100?img=12" alt=""><div><strong>Marcus Reid</strong><span>Resident, New York</span></div></div>
+        </div>
+        <div class="testimonial reveal">
+          <p class="quote">"From browsing to moving in — everything was smooth. The map view alone is worth coming back for."</p>
+          <div class="who"><img src="https://i.pravatar.cc/100?img=32" alt=""><div><strong>Amélie Khan</strong><span>Resident, London</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo">Maison<span>ia</span></div>
+          <p style="max-width:340px">Modern rental platform connecting renters with the homes they love. Curated, verified, and beautifully presented.</p>
+          <div class="socials" style="margin-top:20px">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4>Discover</h4>
+          <ul>
+            <li><a href="properties.html">All properties</a></li>
+            <li><a href="favorites.html">Favorites</a></li>
+            <li><a href="contact.html">Contact us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fas fa-envelope"></i> hello@maisonia.com</li>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-map-marker-alt"></i> 5th Avenue, New York</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Maisonia. All rights reserved.</span>
+        <span>Crafted with ♥ for modern renters</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

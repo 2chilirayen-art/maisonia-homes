@@ -1,0 +1,44 @@
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.fade-up { animation: fadeUp .7s var(--t-slow) both; }
+.fade-in { animation: fadeIn .6s ease both; }
+.scale-in { animation: scaleIn .5s var(--t) both; }
+.slide-down { animation: slideDown .4s var(--t) both; }
+.delay-1 { animation-delay: .1s; }
+.delay-2 { animation-delay: .2s; }
+.delay-3 { animation-delay: .35s; }
+.delay-4 { animation-delay: .5s; }
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.skeleton {
+  background: linear-gradient(90deg, #eef2f7 0%, #f7fafc 40%, #eef2f7 80%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: var(--radius);
+}
+
+.spinner {
+  width: 38px; height: 38px;
+  border: 3px solid var(--gray);
+  border-top-color: var(--turquoise);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}

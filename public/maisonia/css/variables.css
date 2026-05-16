@@ -1,0 +1,41 @@
+/* Maisonia Design Tokens */
+:root {
+  /* Colors */
+  --navy: #0F172A;
+  --navy-2: #1E293B;
+  --white: #FFFFFF;
+  --light: #F8FAFC;
+  --gray: #E2E8F0;
+  --gray-2: #94A3B8;
+  --gray-3: #64748B;
+  --gold: #D4A373;
+  --gold-2: #b8895a;
+  --turquoise: #06B6D4;
+  --turquoise-2: #0891B2;
+  --danger: #EF4444;
+  --success: #10B981;
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing & layout */
+  --container: 1240px;
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+  --shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.18);
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.4);
+
+  /* Transitions */
+  --t-fast: 160ms ease;
+  --t: 280ms cubic-bezier(.2,.7,.3,1);
+  --t-slow: 600ms cubic-bezier(.2,.7,.3,1);
+}
