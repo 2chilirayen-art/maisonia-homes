@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Edit property</title><script>
+const id = new URLSearchParams(location.search).get('id');
+location.replace('add-property.html' + (id ? '?id=' + id : ''));
+</script></head><body></body></html>
