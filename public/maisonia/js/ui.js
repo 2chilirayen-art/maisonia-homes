@@ -23,7 +23,25 @@ export function initNavbar() {
   window.addEventListener('scroll', onScroll, { passive: true });
 
   const toggle = nav.querySelector('.nav-toggle');
-  if (toggle) toggle.addEventListener('click', () => nav.classList.toggle('open'));
+  if (toggle) {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nav.classList.toggle('open');
+      const icon = toggle.querySelector('i');
+      if (icon) icon.className = nav.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+    });
+  }
+  // Close on outside click / on link click
+  document.addEventListener('click', (e) => {
+    if (!nav.classList.contains('open')) return;
+    if (e.target.closest('.nav-links a')) {
+      nav.classList.remove('open');
+      const i = toggle?.querySelector('i'); if (i) i.className = 'fas fa-bars';
+    } else if (!nav.contains(e.target)) {
+      nav.classList.remove('open');
+      const i = toggle?.querySelector('i'); if (i) i.className = 'fas fa-bars';
+    }
+  });
 
   // active link
   const path = location.pathname.split('/').pop() || 'index.html';
