@@ -1,4 +1,22 @@
-// ===== UI utilities — toasts, navbar, reveal animations =====
+// ===== UI utilities — toasts, navbar, reveal animations, WA FAB =====
+
+// Inject floating WhatsApp button on all client pages
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('.wa-fab')) return;
+    const a = document.createElement('a');
+    a.className = 'wa-fab';
+    a.href = 'https://wa.me/21623922701';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.setAttribute('aria-label', 'Chat on WhatsApp');
+    a.innerHTML = '<i class="fab fa-whatsapp"></i>';
+    a.style.cssText = 'position:fixed;bottom:18px;right:18px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:0 10px 30px rgba(37,211,102,.45);z-index:150;text-decoration:none;transition:transform .2s';
+    a.onmouseenter = () => a.style.transform = 'scale(1.08)';
+    a.onmouseleave = () => a.style.transform = 'scale(1)';
+    document.body.appendChild(a);
+  });
+}
 
 export function toast(message, type = '') {
   let wrap = document.querySelector('.toast-wrap');
