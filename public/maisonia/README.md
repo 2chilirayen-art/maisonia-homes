@@ -1,4 +1,4 @@
-# Maisonia — Premium Real Estate Rental Platform
+# RaniaDjerba — Premium Real Estate Rental Platform
 
 A modern, production-ready rental platform built with **HTML5, CSS3, vanilla JavaScript and Firebase** (Auth, Firestore, Storage).
 
@@ -94,4 +94,4 @@ service firebase.storage {
 ```
 
 ---
-© 2026 Maisonia.
+© 2026 RaniaDjerba.
