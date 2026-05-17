@@ -47,7 +47,7 @@ export function escapeHtml(s = '') {
 
 export function formatPrice(n) {
   if (n == null || isNaN(n)) return '—';
-  return '$' + Number(n).toLocaleString('en-US');
+  return Number(n).toLocaleString('en-US') + ' TND';
 }
 
 export function formatDate(d) {
