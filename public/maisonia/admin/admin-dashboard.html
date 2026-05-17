@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard — Maisonia Admin</title>
+  <title>Dashboard — RaniaDjerba Admin</title>
   <link rel="stylesheet" href="admin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -11,7 +11,7 @@
 <body>
   <div class="admin-layout">
     <aside class="admin-sidebar" id="sidebar">
-      <div class="brand">Maison<span>ia</span></div>
+      <div class="brand">Rania<span>Djerba</span></div>
       <nav class="admin-nav">
         <a href="admin-dashboard.html" class="active"><i class="fas fa-th-large"></i> Dashboard</a>
         <a href="properties-manager.html"><i class="fas fa-home"></i> Properties</a>
@@ -42,7 +42,7 @@
         <div class="stat-card c1"><div class="icn"><i class="fas fa-home"></i></div><div><div class="label">Total properties</div><div class="num" id="s-props">0</div></div></div>
         <div class="stat-card c2"><div class="icn"><i class="fas fa-envelope"></i></div><div><div class="label">Messages</div><div class="num" id="s-msgs">0</div></div></div>
         <div class="stat-card c3"><div class="icn"><i class="fas fa-eye"></i></div><div><div class="label">Total views</div><div class="num">8,420</div></div></div>
-        <div class="stat-card c4"><div class="icn"><i class="fas fa-dollar-sign"></i></div><div><div class="label">Avg price</div><div class="num" id="s-avg">$0</div></div></div>
+        <div class="stat-card c4"><div class="icn"><i class="fas fa-dollar-sign"></i></div><div><div class="label">Avg price</div><div class="num" id="s-avg">0 TND</div></div></div>
       </div>
 
       <div class="charts-grid">
@@ -78,7 +78,7 @@
     document.getElementById('user-email').textContent = user.email;
     document.getElementById('user-avatar').textContent = (user.email[0] || 'A').toUpperCase();
     document.getElementById('logout-btn').addEventListener('click', async () => { await logout(); location.replace('../login.html'); });
-    document.getElementById('toggle-sidebar').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    const _sb=document.getElementById('sidebar');const _tg=document.getElementById('toggle-sidebar');_tg.addEventListener('click',()=>{const o=_sb.classList.toggle('open');document.body.classList.toggle('sidebar-open',o);});document.addEventListener('click',(e)=>{if(!_sb.classList.contains('open'))return;if(!_sb.contains(e.target)&&!_tg.contains(e.target)){_sb.classList.remove('open');document.body.classList.remove('sidebar-open');}});
 
     let cityChart, typeChart;
     subscribeProperties((items) => {

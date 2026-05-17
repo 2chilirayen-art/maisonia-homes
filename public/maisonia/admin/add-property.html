@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add property — Maisonia Admin</title>
+  <title>Add property — RaniaDjerba Admin</title>
   <link rel="stylesheet" href="admin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
   <div class="admin-layout">
     <aside class="admin-sidebar" id="sidebar">
-      <div class="brand">Maison<span>ia</span></div>
+      <div class="brand">Rania<span>Djerba</span></div>
       <nav class="admin-nav">
         <a href="admin-dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a>
         <a href="properties-manager.html"><i class="fas fa-home"></i> Properties</a>
@@ -38,7 +38,7 @@
         <div class="form-grid">
           <div class="form-group full"><label>Title</label><input name="title" required placeholder="Modern downtown apartment"></div>
           <div class="form-group full"><label>Description</label><textarea name="description" rows="4" required></textarea></div>
-          <div class="form-group"><label>Price (USD / month)</label><input type="number" name="price" required min="0"></div>
+          <div class="form-group"><label>Price (TND / month)</label><input type="number" name="price" required min="0"></div>
           <div class="form-group"><label>Type</label>
             <select name="type" required>
               <option value="">Select type</option>
@@ -91,7 +91,7 @@
     document.getElementById('user-email').textContent = user.email;
     document.getElementById('user-avatar').textContent = (user.email[0] || 'A').toUpperCase();
     document.getElementById('logout-btn').addEventListener('click', async () => { await logout(); location.replace('../login.html'); });
-    document.getElementById('toggle-sidebar').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    const _sb=document.getElementById('sidebar');const _tg=document.getElementById('toggle-sidebar');_tg.addEventListener('click',()=>{const o=_sb.classList.toggle('open');document.body.classList.toggle('sidebar-open',o);});document.addEventListener('click',(e)=>{if(!_sb.classList.contains('open'))return;if(!_sb.contains(e.target)&&!_tg.contains(e.target)){_sb.classList.remove('open');document.body.classList.remove('sidebar-open');}});
 
     // Edit mode?
     const editId = new URLSearchParams(location.search).get('id');
