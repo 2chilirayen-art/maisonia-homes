@@ -68,7 +68,7 @@
     document.getElementById('user-email').textContent = user.email;
     document.getElementById('user-avatar').textContent = (user.email[0] || 'A').toUpperCase();
     document.getElementById('logout-btn').addEventListener('click', async () => { await logout(); location.replace('../login.html'); });
-    document.getElementById('toggle-sidebar').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+    const _sb=document.getElementById('sidebar');const _tg=document.getElementById('toggle-sidebar');_tg.addEventListener('click',()=>{const o=_sb.classList.toggle('open');document.body.classList.toggle('sidebar-open',o);});document.addEventListener('click',(e)=>{if(!_sb.classList.contains('open'))return;if(!_sb.contains(e.target)&&!_tg.contains(e.target)){_sb.classList.remove('open');document.body.classList.remove('sidebar-open');}});
 
     const tbody = document.getElementById('tbody');
     const pag = document.getElementById('pagination');
