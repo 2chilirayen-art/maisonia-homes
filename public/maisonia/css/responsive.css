@@ -211,17 +211,21 @@ img, video, iframe { max-width: 100%; height: auto; }
 /* ---- ≤ 480px (small phones) ---- */
 @media (max-width: 480px) {
   .container { padding: 0 14px; }
-  .hero-content { padding: 80px 0 40px; }
-  .hero h1 { font-size: 1.85rem !important; }
-  .hero p.sub { font-size: .9rem; }
-  .stats-grid { grid-template-columns: 1fr; }
-  h2.section-title { font-size: 1.55rem; }
-  .property-card .specs span { font-size: .78rem; }
+  .hero-content { padding: 80px 0 22px; }
+  .hero h1 { font-size: 1.75rem !important; }
+  .hero p.sub { font-size: .88rem; margin-bottom: 18px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  h2.section-title { font-size: 1.45rem; }
+  .property-card .info { padding: 9px; }
+  .property-card .price { font-size: .95rem; }
+  .property-card h3 { font-size: .8rem; }
+  .property-card .specs { font-size: .64rem; gap: 6px; }
   .gallery .swiper { height: 260px !important; }
   .gallery-thumbs img { height: 52px !important; }
   .specs-box { grid-template-columns: repeat(2, 1fr) !important; padding: 14px !important; }
   .btn { padding: 11px 16px; font-size: .88rem; }
   .page-head { padding: 90px 0 40px; }
+  .section { padding: 28px 0; }
 }
 
 /* ---- Touch device tweaks ---- */
