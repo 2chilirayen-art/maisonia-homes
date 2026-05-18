@@ -92,7 +92,7 @@ input, select, textarea { font-family: inherit; font-size: 1rem; outline: none; 
 /* ===== Hero ===== */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 78vh;
   display: flex; align-items: center;
   color: var(--white);
   overflow: hidden;
