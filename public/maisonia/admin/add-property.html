@@ -83,7 +83,7 @@
   <script type="module">
     import { requireAdmin, logout } from '../js/auth.js';
     import { createProperty, updateProperty, getProperty } from '../js/properties.js';
-    import { storage, storageRef, uploadBytesResumable, getDownloadURL } from '../js/firebase-config.js';
+    import { uploadToCloudinary } from '../js/cloudinary.js';
     import { renderPicker } from '../js/map.js';
     import { toast } from '../js/ui.js';
 
@@ -157,15 +157,10 @@
           lbl.textContent = `Uploading 0/${pendingFiles.length}...`;
           for (let i = 0; i < pendingFiles.length; i++) {
             const f = pendingFiles[i];
-            const r = storageRef(storage, `properties/${Date.now()}_${i}_${f.name}`);
-            const task = uploadBytesResumable(r, f);
-            await new Promise((resolve, reject) => {
-              task.on('state_changed', null, reject, async () => {
-                const url = await getDownloadURL(task.snapshot.ref);
-                uploadedImages.push(url);
-                resolve();
-              });
+            const url = await uploadToCloudinary(f, (p) => {
+              lbl.textContent = `Uploading ${i+1}/${pendingFiles.length} (${Math.round(p*100)}%)...`;
             });
+            uploadedImages.push(url);
             lbl.textContent = `Uploading ${i+1}/${pendingFiles.length}...`;
           }
           pendingFiles = [];
