@@ -128,12 +128,16 @@ img, video, iframe { max-width: 100%; height: auto; }
   /* 2-column property grid on phones */
   .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
 
-  /* Cards */
-  .property-card { border-radius: 16px; }
-  .property-card .info { padding: 16px; gap: 8px; }
-  .property-card .price { font-size: 1.3rem; }
-  .property-card h3 { font-size: 1.02rem; }
-  .property-card .specs { gap: 12px; font-size: .8rem; flex-wrap: wrap; }
+  /* Cards — tuned for 2-col mobile */
+  .property-card { border-radius: 12px; }
+  .property-card .info { padding: 10px; gap: 5px; }
+  .property-card .price { font-size: 1rem; }
+  .property-card h3 { font-size: .85rem; line-height: 1.25; }
+  .property-card .addr { font-size: .72rem; gap: 4px; }
+  .property-card .specs { gap: 8px; font-size: .68rem; padding-top: 8px; flex-wrap: wrap; }
+  .property-card .specs span { gap: 3px; }
+  .property-card .badge { font-size: .6rem; padding: 4px 8px; top: 8px; left: 8px; }
+  .property-card .fav-btn { width: 32px; height: 32px; top: 8px; right: 8px; font-size: .85rem; }
 
   /* Stats */
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
