@@ -74,47 +74,59 @@ img, video, iframe { max-width: 100%; height: auto; }
   .nav-links a::after { display: none !important; }
   .nav-links a.active, .nav-links a:hover { background: var(--light); color: var(--gold) !important; }
 
-  /* Hero */
-  .hero::after {
-    background: linear-gradient(180deg, rgba(15,23,42,.85) 0%, rgba(15,23,42,.7) 60%, rgba(15,23,42,.55) 100%);
+  /* Hero — mobile: image on top, content compact, search BELOW hero image area */
+  .hero {
+    min-height: auto;
+    display: block;
+    padding-bottom: 0;
   }
-  .hero-content { padding: 90px 0 50px; }
-  .hero .eyebrow { font-size: .72rem; padding: 6px 12px; margin-bottom: 16px; }
-  .hero h1 { font-size: clamp(1.9rem, 8vw, 2.4rem) !important; letter-spacing: -.5px; }
-  .hero p.sub { font-size: .95rem; margin-bottom: 24px; }
+  .hero::after {
+    background: linear-gradient(180deg, rgba(15,23,42,.7) 0%, rgba(15,23,42,.55) 60%, rgba(15,23,42,.85) 100%);
+  }
+  .hero-content { padding: 90px 0 28px; max-width: 100%; }
+  .hero .eyebrow { font-size: .7rem; padding: 5px 12px; margin-bottom: 14px; }
+  .hero h1 { font-size: clamp(1.85rem, 7.5vw, 2.3rem) !important; letter-spacing: -.5px; margin-bottom: 12px; }
+  .hero p.sub { font-size: .92rem; margin-bottom: 22px; }
 
-  /* Search bar — compact mobile design */
+  /* Search bar — compact mobile pill stack, sits visually below hero image */
   .search-bar {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
-    padding: 12px;
-    border-radius: 18px;
+    gap: 6px;
+    padding: 10px;
+    border-radius: 14px;
     background: rgba(255,255,255,.98);
+    box-shadow: 0 14px 36px rgba(15,23,42,.28);
+    max-width: 100%;
   }
   .search-bar .field {
     width: 100%;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-right: none !important;
     border-bottom: 1px solid var(--gray);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--light);
   }
   .search-bar .field:last-of-type { border-bottom: none; }
-  .search-bar .field label { font-size: .65rem; margin-bottom: 4px; }
-  .search-bar .field input, .search-bar .field select { font-size: .92rem; width: 100%; }
+  .search-bar .field label { font-size: .62rem; margin-bottom: 2px; }
+  .search-bar .field input,
+  .search-bar .field select { font-size: .9rem; width: 100%; padding: 2px 0; }
   .search-bar button.search-btn {
     width: 100% !important;
-    height: 48px !important;
-    border-radius: 12px !important;
-    font-size: 1rem !important;
+    height: 44px !important;
+    border-radius: 10px !important;
+    font-size: .98rem !important;
     gap: 8px;
+    min-width: 0 !important;
   }
-  .search-bar button.search-btn::after { content: 'Search'; font-weight: 600; font-size: .95rem; }
+  .search-bar button.search-btn::after { content: 'Search'; font-weight: 600; font-size: .92rem; }
 
-  /* Sections */
-  .section { padding: 50px 0; }
-  .grid-3, .grid-4 { grid-template-columns: 1fr !important; gap: 18px; }
+  /* Sections — tighter vertical rhythm on mobile */
+  .section { padding: 36px 0; }
+  .section-head { margin-bottom: 24px; }
+
+  /* 2-column property grid on phones */
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; }
 
   /* Cards */
   .property-card { border-radius: 16px; }
