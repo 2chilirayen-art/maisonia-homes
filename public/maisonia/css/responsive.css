@@ -74,52 +74,57 @@ img, video, iframe { max-width: 100%; height: auto; }
   .nav-links a::after { display: none !important; }
   .nav-links a.active, .nav-links a:hover { background: var(--light); color: var(--gold) !important; }
 
-  /* Hero — mobile: image on top, content compact, search BELOW hero image area */
+  /* Hero — mobile: image + title only, search moves to its own section below */
   .hero {
-    min-height: auto;
-    display: block;
+    min-height: 60vh;
+    display: flex;
     padding-bottom: 0;
   }
   .hero::after {
     background: linear-gradient(180deg, rgba(15,23,42,.7) 0%, rgba(15,23,42,.55) 60%, rgba(15,23,42,.85) 100%);
   }
-  .hero-content { padding: 90px 0 28px; max-width: 100%; }
+  .hero-content { padding: 100px 0 40px; max-width: 100%; }
   .hero .eyebrow { font-size: .7rem; padding: 5px 12px; margin-bottom: 14px; }
   .hero h1 { font-size: clamp(1.85rem, 7.5vw, 2.3rem) !important; letter-spacing: -.5px; margin-bottom: 12px; }
-  .hero p.sub { font-size: .92rem; margin-bottom: 22px; }
+  .hero p.sub { font-size: .92rem; margin-bottom: 0; }
 
-  /* Search bar — compact mobile pill stack, sits visually below hero image */
+  /* Search section — clean compact card BELOW hero image on mobile */
+  .search-section {
+    margin-top: 0;
+    padding: 16px 0 8px;
+    background: var(--light);
+  }
   .search-bar {
     flex-direction: column;
     align-items: stretch;
     gap: 6px;
     padding: 10px;
     border-radius: 14px;
-    background: rgba(255,255,255,.98);
-    box-shadow: 0 14px 36px rgba(15,23,42,.28);
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(15,23,42,.10);
     max-width: 100%;
   }
   .search-bar .field {
     width: 100%;
-    padding: 8px 12px;
+    padding: 6px 12px;
     border-right: none !important;
     border-bottom: 1px solid var(--gray);
     border-radius: 8px;
     background: var(--light);
   }
   .search-bar .field:last-of-type { border-bottom: none; }
-  .search-bar .field label { font-size: .62rem; margin-bottom: 2px; }
+  .search-bar .field label { font-size: .6rem; margin-bottom: 2px; }
   .search-bar .field input,
-  .search-bar .field select { font-size: .9rem; width: 100%; padding: 2px 0; }
+  .search-bar .field select { font-size: .88rem; width: 100%; padding: 2px 0; height: 22px; }
   .search-bar button.search-btn {
     width: 100% !important;
-    height: 44px !important;
+    height: 40px !important;
     border-radius: 10px !important;
-    font-size: .98rem !important;
+    font-size: .95rem !important;
     gap: 8px;
     min-width: 0 !important;
   }
-  .search-bar button.search-btn::after { content: 'Search'; font-weight: 600; font-size: .92rem; }
+  .search-bar button.search-btn::after { content: 'Search'; font-weight: 600; font-size: .9rem; }
 
   /* Sections — tighter vertical rhythm on mobile */
   .section { padding: 36px 0; }
